@@ -1,26 +1,249 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* COC Authentic 3D Isometric View Styles */
+.coc-isometric-wrapper {
+  perspective: 1500px;
+  perspective-origin: center center;
+  transform-style: preserve-3d;
+}
+
+.coc-isometric-canvas {
+  transform-style: preserve-3d;
+  transform: rotateX(30deg) rotateY(-15deg) rotateZ(0deg);
+  transition: transform 0.2s ease;
+}
+
+.coc-isometric-canvas:hover {
+  transform: rotateX(35deg) rotateY(-20deg) rotateZ(0deg);
+}
+
+/* Enhanced Canvas Controls */
+.coc-canvas-container {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.coc-canvas-container:active {
+  cursor: grabbing;
+}
+
+.coc-canvas-container.dragging {
+  cursor: grabbing;
+}
+
+/* Smooth pan transitions */
+.coc-canvas-smooth {
+  transition: transform 0.1s ease-out;
+}
+
+/* 3D Building Effects */
+.coc-building-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.coc-building-3d:hover {
+  transform: translateZ(10px) rotateX(5deg);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* COC Responsive Editor Styles */
+.coc-responsive-wrapper {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.mobile-layout {
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.mobile-canvas {
+  background: radial-gradient(circle at center, #4a7c59 0%, #2d4a3a 100%);
+}
+
+.desktop-canvas {
+  background: radial-gradient(ellipse at center, #5a8c6a 0%, #4a7c59 40%, #2d4a3a 100%);
+}
+
+/* Prevent zoom on double tap for iOS */
+.coc-base-editor * {
+  touch-action: manipulation;
+}
+
+/* Smooth transitions for responsive elements */
+.coc-base-editor > * {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced Authentic COC Grass Background */
+.coc-grass-bg {
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(90, 140, 106, 0.8) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(74, 124, 89, 0.6) 0%, transparent 50%),
+    radial-gradient(circle at 40% 70%, rgba(45, 74, 58, 0.4) 0%, transparent 50%),
+    linear-gradient(135deg, #2d4a3a 0%, #4a7c59 50%, #5a8c6a 100%);
+  background-size: 300px 300px, 400px 400px, 200px 200px, 100% 100%;
+  background-position: 0 0, 100px 100px, 200px 50px, 0 0;
+}
+
+/* 3D Grid Enhancement */
+.coc-grid-3d {
+  transform: rotateX(60deg) rotateY(-45deg);
+  transform-style: preserve-3d;
+  opacity: 0.6;
+}
+
+/* Authentic COC Colors */
+:root {
+  --coc-grass-primary: #4a7c59;
+  --coc-grass-secondary: #5a8c6a;
+  --coc-grass-dark: #2d4a3a;
+  --coc-amber-primary: #f59e0b;
+  --coc-amber-secondary: #d97706;
+  --coc-gold: #ffd700;
+}
+
+/* Hide scrollbars but keep functionality */
+.overflow-y-auto::-webkit-scrollbar {
+  width: 4px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background: #d97706;
+  border-radius: 2px;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .coc-base-editor {
+    font-size: 14px;
+  }
+  
+  button {
+    min-height: 44px; /* iOS recommended touch target */
+  }
+  
+  select, input {
+    min-height: 44px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+
+  .coc-isometric-canvas {
+    transform: rotateX(25deg) rotateY(-10deg) rotateZ(0deg);
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .mobile-layout .building-palette {
+    max-height: 80px;
+  }
+  
+  .mobile-layout .stats-panel {
+    width: 100px;
+  }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .coc-base-editor {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Authentic COC Button Styles */
+.coc-button {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  border: 2px solid #92400e;
+  box-shadow: 
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.2s ease;
+  transform: perspective(100px) rotateX(10deg);
+}
+
+.coc-button:hover {
+  transform: perspective(100px) rotateX(15deg) translateY(-2px);
+  box-shadow: 
+    0 6px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.coc-button:active {
+  transform: perspective(100px) rotateX(5deg) translateY(1px);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Loading Animation for COC Elements */
+.coc-loading {
+  background: linear-gradient(90deg, 
+    rgba(74, 124, 89, 0.3) 0%, 
+    rgba(90, 140, 106, 0.6) 50%, 
+    rgba(74, 124, 89, 0.3) 100%
+  );
+  background-size: 200% 100%;
+  animation: cocShimmer 2s ease-in-out infinite;
+}
+
+@keyframes cocShimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Enhanced Focus States */
+button:focus,
+select:focus,
+input:focus {
+  outline: 3px solid var(--coc-gold);
+  outline-offset: 2px;
+}
+
+/* Smooth Zoom Animation */
+.zoom-transition {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
